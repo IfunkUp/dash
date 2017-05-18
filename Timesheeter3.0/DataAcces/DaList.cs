@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Timesheeter3._0.Classes;
+using Timesheeter3._0.Classes.tickets;
 using Timesheeter3_0.Classes;
 
 namespace Timesheeter3._0.DataAcces
@@ -89,6 +90,33 @@ namespace Timesheeter3._0.DataAcces
                 }
                 return TicketList;
             }
+        }
+        public static List<Satisfaction> GetSatisfactionList (string Query)
+        {
+            Satisfaction S;
+            var SatisfactionList = new List<Satisfaction>();
+            var con = FireBird.Openconnection(FireBird.Connectionstring());
+            using (con)
+            {
+                FbCommand cmd = new FbCommand(Query, con);
+                using (FbDataReader reader = cmd.ExecuteReader())
+                {
+                    S = new Satisfaction();
+                    S.id = (long)reader["f_sat_id"];
+                    S.score = (int)reader["f_sat_score"];
+                    S.comment = (string)reader["f_sat_comment"];
+                    S.assignee_id = (long)reader["f_sat_assignee_id"];
+                    S.created = (DateTime)reader["f_sat_created"];
+                    SatisfactionList.Add(S);
+                }
+                return SatisfactionList;
+            }
+
+
+
+
+
+            
         }
 
 

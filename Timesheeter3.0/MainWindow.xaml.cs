@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace Timesheeter3._0
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
@@ -29,7 +31,7 @@ namespace Timesheeter3._0
 
         private void test_Click(object sender, RoutedEventArgs e)
         {
-            List<User> lijst = DaList.GetUserList("select * from t_user" );
+            var Lijst = DaList.GetUserList("select * from t_user" );
         }
     }
 }

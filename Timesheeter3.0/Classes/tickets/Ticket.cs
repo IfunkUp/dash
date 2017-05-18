@@ -18,7 +18,7 @@ namespace Timesheeter3_0.Classes
         public string tags { get; set; }
         public string url { get; set; }
         public string via { get; set; }
-
+        public long organisationId { get; set; }
 
     }
 }

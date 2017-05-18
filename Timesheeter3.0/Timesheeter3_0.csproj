@@ -70,6 +70,7 @@
     <Compile Include="Classes\knowledge_base\Category.cs" />
     <Compile Include="Classes\knowledge_base\Section.cs" />
     <Compile Include="Classes\tickets\Organization.cs" />
+    <Compile Include="Classes\tickets\Satisfaction.cs" />
     <Compile Include="Classes\tickets\Ticket.cs" />
     <Compile Include="Classes\tickets\User.cs" />
     <Compile Include="DataAcces\DaList.cs" />
