@@ -9,7 +9,7 @@ namespace Timesheeter3._0.Classes
     class Organization
     {
 
-        public int id { get; set; }
+        public long id { get; set; }
         public string name { get; set; }
         public string region { get; set; }
         public string dom_name { get; set; }
