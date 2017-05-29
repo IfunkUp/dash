@@ -1,6 +1,7 @@
 ﻿using FirebirdSql.Data.FirebirdClient;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,8 +47,9 @@ namespace Timesheeter3._0.DataAcces
 
 
         }
-        public static List<Organization> GetOrganizationList(string Query)
+        public static List<Organization> GetOrganizationList()
         {
+            String Query = "select * from T_organization";
             Organization O;
             var OrganizationList = new List<Organization>();
             var con = FireBird.Openconnection(FireBird.Connectionstring());
@@ -57,13 +59,17 @@ namespace Timesheeter3._0.DataAcces
                 FbCommand cmd = new FbCommand(Query, con);
                 using (FbDataReader reader = cmd.ExecuteReader())
                 {
-                    //hier nog de organisatie implementeren
-                    O = new Organization();
-                    O.id = (long)reader["f_org_id"];
-                    O.name = (string)reader["f_org_name"];
-                    O.region = (string)reader["f_org_region"];
-                    O.created = (DateTime)reader["f_org_created"];
-                    OrganizationList.Add(O);
+                    while (reader.Read())
+                    {
+                        O = new Organization();
+                        O.id = (long)reader["f_org_id"];
+                        O.name = (string)reader["f_org_name"];
+                        O.region = (string)reader["f_org_region"];
+                        //O.created = (DateTime)reader["f_org_created"];
+                        OrganizationList.Add(O);
+                    }
+ 
+                  
                 }
                 return OrganizationList;
             }
@@ -78,17 +84,25 @@ namespace Timesheeter3._0.DataAcces
                 FbCommand cmd = new FbCommand(Query, con);
                 using (FbDataReader reader = cmd.ExecuteReader())
                 {
-                    T = new Ticket();
-                    T.id = (long)reader["f_tk_id"];
-                    T.assigneeId = (long)reader["f_tk_ass_id"];
-                    T.created = (DateTime)reader["f_tk_created"];
-                    T.updated = (DateTime)reader["f_tk_updated"];
-                    T.subject = (string)reader["f_tk_subject"];
-                    
+                    while (reader.Read())
+                    {
+                        T = new Ticket();
+                        T.id = (long)reader["f_tk_id"];
+                        T.assignee_id = (long)reader["f_tk_ass_id"];
+                        T.created = (DateTime)reader["f_tk_created"];
+                        T.updated = (DateTime)reader["f_tk_updated"];
+                        if (!string.IsNullOrWhiteSpace(reader["f_tk_subject"].ToString()))
+                        {
+                            T.subject = (string)reader["f_tk_subject"];
+                        }
+                       
+                        //T.assignee_name = (string)reader["f_us_name"];
 
-                    TicketList.Add(T);
+                        TicketList.Add(T);
+                    }
+                    return TicketList;
                 }
-                return TicketList;
+               
             }
         }
         public static List<Satisfaction> GetSatisfactionList (string Query)
