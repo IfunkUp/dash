@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Timesheeter3._0.Classes
 {
-    class Organization
+    public class Organization
     {
 
         public long id { get; set; }
