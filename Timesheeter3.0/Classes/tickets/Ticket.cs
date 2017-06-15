@@ -103,15 +103,25 @@ namespace Timesheeter3_0.Classes
                 OnPropertyChanged();
             }
         }
-        private long m_organization_id;
+        private string m_org_name;
 
-        public long organization_id
+        public string organization_name
         {
-            get { return m_organization_id; }
-            set { m_organization_id = value;
+            get { return m_org_name; }
+            set {
+                m_org_name = value;
                 OnPropertyChanged();
             }
         }
+
+        private string m_org_region;
+
+        public string Organisation_region
+        {
+            get { return m_org_region; }
+            set { m_org_region = value; }
+        }
+
 
         private string m_Assignee_name;
 

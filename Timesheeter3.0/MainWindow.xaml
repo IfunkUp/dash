@@ -21,7 +21,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <DatePicker Name="StartDate" Grid.Row="0" Grid.Column="0" Margin="5"/>
+        <DatePicker Name="StartDate" Grid.Row="0" Grid.Column="0" Margin="5" SelectedDateFormat="short"/>
         <ComboBox Name="cmbItem" Grid.Row="0" Grid.Column="1" Margin="5" >
             <ComboBoxItem>Tickets</ComboBoxItem>
             <ComboBoxItem>SatisfactionalRating</ComboBoxItem>

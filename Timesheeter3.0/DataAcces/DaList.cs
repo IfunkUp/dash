@@ -64,7 +64,21 @@ namespace Timesheeter3._0.DataAcces
                         O = new Organization();
                         O.id = (long)reader["f_org_id"];
                         O.name = (string)reader["f_org_name"];
-                        O.region = (string)reader["f_org_region"];
+
+                        if (!string.IsNullOrEmpty((string)reader["f_org_region"]))
+                        {
+                            var String = (string)reader["f_org_region"];
+                            string[] subString = String.Split(',');
+                            String = subString[0].Trim();
+                            O.region = String;
+                        }
+                        else
+                        {
+                            O.region = "X";
+                        }
+
+
+                        //O.region = (string)reader["f_org_region"];
                         //O.created = (DateTime)reader["f_org_created"];
                         OrganizationList.Add(O);
                     }
@@ -84,21 +98,38 @@ namespace Timesheeter3._0.DataAcces
                 FbCommand cmd = new FbCommand(Query, con);
                 using (FbDataReader reader = cmd.ExecuteReader())
                 {
+                   
                     while (reader.Read())
                     {
                         T = new Ticket();
-                        T.id = (long)reader["f_tk_id"];
-                        T.assignee_id = (long)reader["f_tk_ass_id"];
-                        T.created = (DateTime)reader["f_tk_created"];
-                        T.updated = (DateTime)reader["f_tk_updated"];
-                        if (!string.IsNullOrWhiteSpace(reader["f_tk_subject"].ToString()))
+                        T.id = (long)reader["max_id"];
+                      
+                        T.created = (DateTime)reader["created"];
+                        T.updated = (DateTime)reader["updated"];
+                        T.organization_name = (string)reader["org_name"];
+                        if (!string.IsNullOrEmpty((string)reader["org_region"]))
                         {
-                            T.subject = (string)reader["f_tk_subject"];
+                            var String = (string)reader["org_region"];
+                            string[] subString = String.Split(',');
+                            String = subString[0].Trim();
+                            T.Organisation_region = String;
                         }
-                       
-                        //T.assignee_name = (string)reader["f_us_name"];
-
+                        //T.Organisation_region = (string)reader["org_region"];
+                        if (!string.IsNullOrWhiteSpace(reader["subject"].ToString()))
+                        {
+                            T.subject = (string)reader["subject"];
+                        }
+                        T.status = (string)reader["status"];
+                       // T.assignee_name = (string)reader["user_name"];
+                        //T.subject = (string)reader["f_tk_subject"];
                         TicketList.Add(T);
+
+
+
+
+
+
+
                     }
                     return TicketList;
                 }

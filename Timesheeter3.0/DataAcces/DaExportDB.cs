@@ -64,23 +64,37 @@ namespace Timesheeter3._0.DataAcces
             }
             return dt;
         }
-        public static Dictionary<string, List<Ticket>> FetchTicketsByDate(DateTimeOffset? aStart, DateTimeOffset? aEnd, int status)
+        public static Dictionary<Organization, List<Ticket>> FetchTicketsByDate(DateTimeOffset? aStart, DateTimeOffset? aEnd, int status)
         {
             var con = FireBird.Openconnection(FireBird.Connectionstring());
-            var companies = new Dictionary<string, List<Ticket>>();
+            var companies = new Dictionary<Organization, List<Ticket>>();
             var tickets = new List<Ticket>();
             var organizations = new List<String>();
             foreach (var item in DaList.GetOrganizationList())
             {
-                tickets = DaList.GetTicketList(String.Format(@"select * from t_tickets where f_tk_organization_id = '{0}' and (f_tk_created  between '{1}' and '{2}') or (f_tk_updated  between '{1}' and '{2}') and f_tk_status = '{3}'", item.id, aStart.Value, aEnd.Value,status));
+                var s = $"select distinct t.f_tk_subject as \"subject\", count(t.f_tk_id) as \"id\", max(t.f_tk_id) as \"max_id\", "+
+                    $" t.f_tk_status as \"status\", max(t.f_tk_created) as \"created\",max(t.f_tk_updated) as \"updated\", "+
+                    $" max(o.f_org_name) as \"org_name\", " +
+                    $" max(o.f_org_region) as \"org_region\" " +
+                    $" from t_tickets t" +
+                    $" inner join t_organization o on o.f_org_id = t.f_tk_organization_id " +
+                    $" where ( t.f_tk_organization_id = '{item.id}') and " +
+                    $"((t.f_tk_created between '{aStart.Value.DateTime.Date}' and '{aEnd.Value.DateTime.Date}') or " +
+                    $"(t.f_tk_updated between '{aStart.Value.DateTime}' and '{aEnd.Value.DateTime}' ))" +
+                    $"group by t.f_tk_subject ,t.f_tk_status";
+                    
+                    
 
-                if (!companies.ContainsKey(item.name))
+
+                tickets = DaList.GetTicketList(s);
+                
+                if (!companies.ContainsKey(item))
                 {
-                    companies.Add(item.name, tickets);
+                    companies.Add(item, tickets);
                 }
                 else
                 {
-                    companies[item.name].AddRange(tickets);
+                    companies[item].AddRange(tickets);
                 }
             }
             return companies;

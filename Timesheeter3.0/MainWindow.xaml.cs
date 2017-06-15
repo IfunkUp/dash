@@ -31,6 +31,8 @@ namespace Timesheeter3._0
         public MainWindow()
         {
             InitializeComponent();
+            StartDate.SelectedDate=DateTime.Now.AddDays(-7);
+            EndDate.SelectedDate = DateTime.Now;
         }
 
 
@@ -58,13 +60,13 @@ namespace Timesheeter3._0
 
             //companies = DaExportDB.FetchTicketsByDate(StartDate.SelectedDate, EndDate.SelectedDate);
             DaMailer mailer = new DaMailer();
-
-            string test = mailer.GetTicketOverviewHTML((DateTime)StartDate.SelectedDate.Value.Date, (DateTime)EndDate.SelectedDate.Value.Date);
+            
+            string test = mailer.GetTicketOverviewHTML((DateTime)StartDate.SelectedDate, EndDate.SelectedDate.Value.Date);
             
             File.WriteAllText("test.html", test);
             System.Diagnostics.Process.Start("test.html");
 
-
+            this.Close();
 
 
 
